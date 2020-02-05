@@ -4,14 +4,13 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import kotlin.math.max
 
-class Ripple : ContentView {
-    private val paint = Paint()
+class Ripple(
+    width: LayoutSize = LayoutSize.WRAP_CONTENT,
+    height: LayoutSize = LayoutSize.WRAP_CONTENT,
+    content: View
+) : ContentView(width, height, content) {
 
-    constructor(
-        width: LayoutSize = LayoutSize.WRAP_CONTENT,
-        height: LayoutSize = LayoutSize.WRAP_CONTENT,
-        content: View
-    ) : super(width, height, content)
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     override fun draw(canvas: Canvas) {
         paint.color = 0x2fffffff

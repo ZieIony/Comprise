@@ -2,15 +2,13 @@ package comprise.view
 
 import android.graphics.Canvas
 import android.view.MotionEvent
-import comprise.widget.ViewStyle
 
-abstract class View : ViewStyle {
-    var style: ViewStyle
+abstract class View {
+    var desiredWidth: LayoutSize
+    var desiredHeight: LayoutSize
 
     var x = 0
     var y = 0
-    override var desiredWidth: LayoutSize   // what the user wants
-    override var desiredHeight: LayoutSize
 
     var measuredWidth = 0   // what the view wants
     var measuredHeight = 0
@@ -18,12 +16,11 @@ abstract class View : ViewStyle {
     var height = 0
 
     constructor(
-        style: ViewStyle
+        width: LayoutSize = LayoutSize.WRAP_CONTENT,
+        height: LayoutSize = LayoutSize.WRAP_CONTENT
     ) {
-        this.style = style
-
-        this.desiredWidth = style.desiredWidth
-        this.desiredHeight = style.desiredHeight
+        desiredWidth = width
+        desiredHeight = height
     }
 
     open fun measure() {

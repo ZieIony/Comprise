@@ -2,11 +2,13 @@ package comprise.widget
 
 import android.content.res.ColorStateList
 import android.graphics.Canvas
+import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
+import comprise.view.LayoutSize
 import comprise.view.View
 import kotlin.math.abs
 import kotlin.math.max
@@ -24,13 +26,15 @@ class Text : View {
     internal var rect = Rect()
     private var baseline = 0
 
-    val paint = TextPaint()
+    val paint = TextPaint(Paint.ANTI_ALIAS_FLAG)
 
     constructor(
+        width: LayoutSize = LayoutSize.WRAP_CONTENT,
+        height: LayoutSize = LayoutSize.WRAP_CONTENT,
         text: CharSequence = "",
         textColor: ColorStateList = ColorStateList.valueOf(0xff000000.toInt()),
         textSize: Float = 20.0f
-    ) {
+    ) : super(width, height) {
         this.text = text
         this.textColor = textColor
         setTextSize(textSize)
@@ -76,7 +80,8 @@ class Text : View {
         measuredWidth += maxWidth
 
         layout = StaticLayout(
-            this.text, paint, measuredWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false
+            this.text, paint,
+            measuredWidth, Layout.Alignment.ALIGN_NORMAL, 1.0f, 0.0f, false
         )
         measuredHeight += layout!!.height
 

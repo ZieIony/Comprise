@@ -1,41 +1,62 @@
 package comprise.widget
 
-import android.graphics.drawable.ColorDrawable
+import android.graphics.Path
+import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import comprise.view.ContentView
 import comprise.view.LayoutSize
+import comprise.view.Padding
 
-class Toolbar : ContentView, ToolbarStyle {
- override   var backgroundColor: Int
+class Toolbar(
+    width: LayoutSize = LayoutSize.MATCH_PARENT,
+    height: LayoutSize = LayoutSize(56 * 3),
+    icon: Drawable,
+    text: CharSequence,
+    background: Drawable? = null
+) : ContentView(width, height) {
 
-    constructor(
-        style: ToolbarStyle,
-        icon: Drawable,
-        text: CharSequence
-    ) : super(style) {
-        content = Stack(
-            views = listOf(
-                Image(
-                    drawable = ColorDrawable(style.backgroundColor)
-                ),
-                Row(
-                    views = listOf(
-                        IconButton(drawable = icon),
-                        Text(text = text)
-                    )
+    private val rect = RectF()
+    private val path = Path()
+
+    var background: Drawable?
+        get() = backgroundImage.drawable
+        set(value) {
+            backgroundImage.drawable = value
+        }
+
+    private val backgroundImage: Image = Image(
+        LayoutSize.MATCH_PARENT, LayoutSize.MATCH_PARENT, drawable = background
+    )
+
+    private val iconButton: IconButton = IconButton(
+        width = LayoutSize(40 * 3),
+        height = LayoutSize(40 * 3),
+        drawable = icon
+    )
+
+    private val titleText: Text = Text(text = text, textSize = 20.0f * 3)
+
+    init {
+        content = Shadow(
+            radius = 8.0f * 3,
+            path = path,
+            content = Stack(
+                width, height,
+                verticalGravity = VerticalGravity.CENTER,
+                views = listOf(
+                    backgroundImage,
+                    Padding(paddingLeft = 16 * 3, content = iconButton),
+                    Padding(paddingLeft = 72 * 3, content = titleText)
                 )
             )
         )
-
-        this.backgroundColor = style.backgroundColor
     }
-}
 
-interface ToolbarStyle : ViewStyle {
-    var backgroundColor: Int
-}
 
-interface ViewStyle {
-    var desiredWidth: LayoutSize
-    var desiredHeight: LayoutSize
+    override fun layout(x: Int, y: Int, width: Int, height: Int) {
+        super.layout(x, y, width, height)
+        path.reset()
+        rect.set(0.0f, 0.0f, width.toFloat(), height.toFloat())
+        path.addRect(rect, Path.Direction.CCW)
+    }
 }

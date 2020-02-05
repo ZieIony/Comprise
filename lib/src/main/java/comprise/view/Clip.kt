@@ -3,18 +3,12 @@ package comprise.view
 import android.graphics.Canvas
 import android.graphics.Path
 
-class Clip : ContentView {
-
+class Clip(
+    width: LayoutSize = LayoutSize.WRAP_CONTENT,
+    height: LayoutSize = LayoutSize.WRAP_CONTENT,
+    content: View,
     var path: Path
-
-    constructor(
-        width: LayoutSize = LayoutSize.WRAP_CONTENT,
-        height: LayoutSize = LayoutSize.WRAP_CONTENT,
-        content: View,
-        path: Path
-    ) : super(width, height, content) {
-        this.path = path
-    }
+) : ContentView(width, height, content) {
 
     override fun draw(canvas: Canvas) {
         val saveCount = canvas.save()

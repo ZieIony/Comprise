@@ -6,7 +6,11 @@ abstract class ViewGroup : View {
 
     val views = mutableListOf<View>()
 
-    constructor(views: List<View> = emptyList()) : super() {
+    constructor(
+        width: LayoutSize = LayoutSize.WRAP_CONTENT,
+        height: LayoutSize = LayoutSize.WRAP_CONTENT,
+        views: List<View> = emptyList()
+    ) : super(width, height) {
         this.views.addAll(views)
     }
 

@@ -1,16 +1,16 @@
 package comprise.view
 
 import android.graphics.Canvas
-import comprise.widget.ViewStyle
 
 open class ContentView : View {
 
     lateinit var content: View
 
     constructor(
-        style: ViewStyle=ViewStyle(),
+        width: LayoutSize = LayoutSize.WRAP_CONTENT,
+        height: LayoutSize = LayoutSize.WRAP_CONTENT,
         content: View? = null
-    ) : super(style) {
+    ) : super(width, height) {
         content?.let {
             this.content = content
         }
@@ -18,13 +18,22 @@ open class ContentView : View {
 
     override fun measure() {
         content.measure()
-        measuredWidth = content.measuredWidth
-        measuredHeight = content.measuredHeight
+
+        measuredWidth = when (desiredWidth) {
+            LayoutSize.WRAP_CONTENT -> content.measuredWidth
+            LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
+            else -> desiredWidth.size
+        }
+        measuredHeight = when (desiredHeight) {
+            LayoutSize.WRAP_CONTENT -> content.measuredHeight
+            LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
+            else -> desiredHeight.size
+        }
     }
 
     override fun layout(x: Int, y: Int, width: Int, height: Int) {
         super.layout(x, y, width, height)
-        content.layout(x, y, width, height)
+        content.layout(0, 0, width, height)
     }
 
     override fun draw(canvas: Canvas) {

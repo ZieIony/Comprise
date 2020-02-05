@@ -8,8 +8,10 @@ import kotlin.math.min
 open class Row : ViewGroup {
 
     constructor(
+        width: LayoutSize = LayoutSize.WRAP_CONTENT,
+        height: LayoutSize = LayoutSize.WRAP_CONTENT,
         views: List<View> = emptyList()
-    ) : super(views)
+    ) : super(width, height, views)
 
     override fun measure() {
         views.forEach {
@@ -17,12 +19,12 @@ open class Row : ViewGroup {
         }
 
         measuredWidth = when (desiredWidth) {
-            LayoutSize.WRAP_CONTENT -> views.map { it.measuredWidth }.sum()
+            LayoutSize.WRAP_CONTENT -> views.filter { it.desiredWidth != LayoutSize.MATCH_PARENT }.map { it.measuredWidth }.sum()
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
             else -> desiredWidth.size
         }
         measuredHeight = when (desiredHeight) {
-            LayoutSize.WRAP_CONTENT -> views.map { it.measuredHeight }.max() ?: 0
+            LayoutSize.WRAP_CONTENT -> views.filter { it.desiredHeight != LayoutSize.MATCH_PARENT }.map { it.measuredHeight }.max() ?: 0
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
             else -> desiredHeight.size
         }
@@ -33,7 +35,8 @@ open class Row : ViewGroup {
 
         var currentX = 0
         views.forEach {
-            it.layout(currentX, y,
+            it.layout(
+                currentX, y,
                 min(it.measuredWidth, this.width),
                 min(it.measuredHeight, this.height)
             )

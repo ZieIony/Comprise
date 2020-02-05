@@ -9,7 +9,7 @@ import comprise.view.View
 
 open class CompriseLayout : FrameLayout {
 
-    var views: MutableList<View>
+    val views = mutableListOf<View>()
 
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
@@ -17,7 +17,7 @@ open class CompriseLayout : FrameLayout {
         attrs,
         defStyleAttr
     ) {
-        this.views = mutableListOf()
+        setLayerType(android.view.View.LAYER_TYPE_SOFTWARE, null)
     }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
