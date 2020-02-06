@@ -7,6 +7,7 @@ The idea is as follows:
  - Very simple views
  - Measure, layout and draw on Canvas as usual
  - Reuse standard resource system
+ - No Context/Resources in views
  - XML?
 
 Views ideally should support everything the current view system does. 

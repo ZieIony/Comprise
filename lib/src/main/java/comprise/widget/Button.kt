@@ -1,23 +1,27 @@
 package comprise.widget
 
-import android.graphics.Path
-import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import comprise.view.Clip
+import android.view.GestureDetector
+import android.view.MotionEvent
 import comprise.view.ContentView
 import comprise.view.LayoutSize
-import comprise.view.Padding
+import comprise.view.View
 
 class Button(
     width: LayoutSize = LayoutSize.WRAP_CONTENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
     background: Drawable? = null,
-    drawable: Drawable? = null,
-    text: CharSequence
-) : ContentView() {
+    content: View? = null,
+    var onClick: ((MotionEvent) -> Unit)? = null
+) : ContentView(width, height) {
 
-    private val rect = RectF()
-    private val path = Path()
+    private val gestureDetector =
+        GestureDetector(object : GestureDetector.SimpleOnGestureListener() {
+            override fun onSingleTapUp(e: MotionEvent): Boolean {
+                onClick?.invoke(e)
+                return true
+            }
+        })
 
     private val backgroundImage = Image(
         LayoutSize.MATCH_PARENT,
@@ -25,42 +29,17 @@ class Button(
         drawable = background
     )
 
-    private val image = Image(width, height, drawable = drawable)
-
-    private val text = Text(width, height, text = text, textSize = 14.0f * 3)
-
     init {
-        content = Shadow(
+        this.content = Stack(
             width, height,
-            path = path,
-            content = Clip(
-                width, height,
-                path = path,
-                content = Stack(
-                    width, height,
-                    views = listOf(
-                        backgroundImage,
-                        Padding(
-                            width, height,
-                            padding = 8 * 3,
-                            content = Stack(
-                                width, height,
-                                views = listOf(
-                                    image,
-                                    this.text
-                                )
-                            )
-                        )
-                    )
-                )
+            views = listOfNotNull(
+                backgroundImage,
+                content
             )
         )
     }
 
-    override fun layout(x: Int, y: Int, width: Int, height: Int) {
-        super.layout(x, y, width, height)
-        path.reset()
-        rect.set(0.0f, 0.0f, width.toFloat(), height.toFloat())
-        path.addRoundRect(rect, (2 * 3).toFloat(), (2 * 3).toFloat(), Path.Direction.CCW)
+    override fun touchEvent(ev: MotionEvent): Boolean {
+        return gestureDetector.onTouchEvent(ev)
     }
 }

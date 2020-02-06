@@ -1,9 +1,13 @@
-package comprise.widget
+package comprise.material
 
 import android.graphics.drawable.Drawable
 import comprise.view.ContentView
 import comprise.view.LayoutSize
 import comprise.view.Ripple
+import comprise.widget.HorizontalGravity
+import comprise.widget.Image
+import comprise.widget.Stack
+import comprise.widget.VerticalGravity
 
 class IconButton(
     width: LayoutSize = LayoutSize.WRAP_CONTENT,

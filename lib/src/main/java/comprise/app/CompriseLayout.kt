@@ -38,14 +38,12 @@ open class CompriseLayout : FrameLayout {
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        var result = false
         views.forEach {
             if (it.x <= ev.x && it.y <= ev.y && (it.x + it.width) >= ev.x && (it.y + it.height) >= ev.y)
-                result = it.touchEvent(ev)
-            if (result)
-                return true
+                if (it.touchEvent(ev))
+                    return true
         }
 
-        return false
+        return true
     }
 }

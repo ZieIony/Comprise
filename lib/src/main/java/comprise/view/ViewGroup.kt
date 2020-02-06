@@ -1,16 +1,17 @@
 package comprise.view
 
 import android.graphics.Canvas
+import android.view.MotionEvent
 
-abstract class ViewGroup : View {
+abstract class ViewGroup(
+    width: LayoutSize = LayoutSize.WRAP_CONTENT,
+    height: LayoutSize = LayoutSize.WRAP_CONTENT,
+    views: List<View> = emptyList()
+) : View(width, height) {
 
     val views = mutableListOf<View>()
 
-    constructor(
-        width: LayoutSize = LayoutSize.WRAP_CONTENT,
-        height: LayoutSize = LayoutSize.WRAP_CONTENT,
-        views: List<View> = emptyList()
-    ) : super(width, height) {
+    init {
         this.views.addAll(views)
     }
 
@@ -21,5 +22,16 @@ abstract class ViewGroup : View {
             it.draw(canvas)
             canvas.restoreToCount(saveCount)
         }
+    }
+
+    override fun touchEvent(ev: MotionEvent): Boolean {
+        views.forEach {
+            val event = MotionEvent.obtain(ev)
+            event.setLocation(event.x - it.x.toFloat(), event.y - it.y.toFloat())
+            if (event.x >= 0 && event.y >= 0 && event.x <= it.width && event.y <= it.height)
+                if (it.touchEvent(event))
+                    return true
+        }
+        return super.touchEvent(ev)
     }
 }

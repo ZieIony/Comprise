@@ -3,13 +3,15 @@ package comprise.widget
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
+import comprise.material.IconButton
+import comprise.theme.dp
 import comprise.view.ContentView
 import comprise.view.LayoutSize
 import comprise.view.Padding
 
 class Toolbar(
     width: LayoutSize = LayoutSize.MATCH_PARENT,
-    height: LayoutSize = LayoutSize(56 * 3),
+    height: LayoutSize = LayoutSize(56.dp),
     icon: Drawable,
     text: CharSequence,
     background: Drawable? = null
@@ -28,11 +30,12 @@ class Toolbar(
         LayoutSize.MATCH_PARENT, LayoutSize.MATCH_PARENT, drawable = background
     )
 
-    private val iconButton: IconButton = IconButton(
-        width = LayoutSize(40 * 3),
-        height = LayoutSize(40 * 3),
-        drawable = icon
-    )
+    private val iconButton: IconButton =
+        IconButton(
+            width = LayoutSize(40 * 3),
+            height = LayoutSize(40 * 3),
+            drawable = icon
+        )
 
     private val titleText: Text = Text(text = text, textSize = 20.0f * 3)
 

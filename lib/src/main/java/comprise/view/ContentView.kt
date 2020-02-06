@@ -1,6 +1,7 @@
 package comprise.view
 
 import android.graphics.Canvas
+import android.view.MotionEvent
 
 open class ContentView : View {
 
@@ -29,6 +30,10 @@ open class ContentView : View {
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
             else -> desiredHeight.size
         }
+    }
+
+    override fun touchEvent(ev: MotionEvent): Boolean {
+        return content.touchEvent(ev)
     }
 
     override fun layout(x: Int, y: Int, width: Int, height: Int) {

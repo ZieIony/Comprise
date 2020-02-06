@@ -5,6 +5,9 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import comprise.app.CompriseLayout
+import comprise.material.MaterialTextButton
+import comprise.material.MaterialTheme
+import comprise.theme.dp
 import comprise.view.LayoutSize
 import comprise.view.Padding
 import comprise.view.View
@@ -17,6 +20,21 @@ class MainLayout : CompriseLayout {
         attrs,
         defStyleAttr
     ) {
+        val theme = MaterialTheme(context)
+
+        val button = MaterialTextButton(
+            style = theme.buttonStyle,
+            background = ColorDrawable(resources.getColor(R.color.colorAccent)),
+            text = "TEST BUTTON"
+        )
+        var clickCount = 0
+        button.onClick = {
+            clickCount++
+            button.text = "CLICKS $clickCount"
+            requestLayout()
+            invalidate()
+        }
+
         views.add(
             Column(
                 views = listOf(
@@ -27,12 +45,22 @@ class MainLayout : CompriseLayout {
                     ),
                     Padding(
                         width = LayoutSize.MATCH_PARENT,
-                        padding = 16 * 3,
+                        padding = 16.dp,
                         content = makeContent()
                     ),
-                    Button(
+                    button,
+                    MaterialTextButton(
+                        width = LayoutSize.MATCH_PARENT,
+                        style = theme.buttonStyle,
                         background = ColorDrawable(resources.getColor(R.color.colorAccent)),
-                        text = "TEST BUTTON"
+                        text = "TEST BUTTON 2"
+                    ),
+                    MaterialTextButton(
+                        width = LayoutSize(56.dp),
+                        height = LayoutSize(56.dp),
+                        style = theme.buttonStyle,
+                        background = ColorDrawable(resources.getColor(R.color.colorAccent)),
+                        text = "TEST BUTTON 3"
                     )
                 )
             )

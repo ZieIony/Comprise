@@ -10,6 +10,8 @@ abstract class View {
     var x = 0
     var y = 0
 
+    var minWidth = 0
+    var minHeight = 0
     var measuredWidth = 0   // what the view wants
     var measuredHeight = 0
     var width = 0 // what was finally mediated
@@ -17,20 +19,24 @@ abstract class View {
 
     constructor(
         width: LayoutSize = LayoutSize.WRAP_CONTENT,
-        height: LayoutSize = LayoutSize.WRAP_CONTENT
+        height: LayoutSize = LayoutSize.WRAP_CONTENT,
+        minWidth: Int = 0,
+        minHeight: Int = 0
     ) {
         desiredWidth = width
         desiredHeight = height
+        this.minWidth = minWidth
+        this.minHeight = minHeight
     }
 
     open fun measure() {
         measuredWidth = when (desiredWidth) {
-            LayoutSize.WRAP_CONTENT -> 0
+            LayoutSize.WRAP_CONTENT -> minWidth
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
             else -> desiredWidth.size
         }
         measuredHeight = when (desiredHeight) {
-            LayoutSize.WRAP_CONTENT -> 0
+            LayoutSize.WRAP_CONTENT -> minHeight
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
             else -> desiredHeight.size
         }
