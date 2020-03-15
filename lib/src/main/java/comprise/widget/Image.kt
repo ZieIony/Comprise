@@ -5,16 +5,11 @@ import android.graphics.drawable.Drawable
 import comprise.view.LayoutSize
 import comprise.view.View
 
-class Image : View {
-    var drawable: Drawable?
-
-    constructor(
-        width: LayoutSize = LayoutSize.WRAP_CONTENT,
-        height: LayoutSize = LayoutSize.WRAP_CONTENT,
-        drawable: Drawable? = null
-    ) : super(width, height) {
-        this.drawable = drawable
-    }
+class Image(
+    width: LayoutSize = LayoutSize.WRAP_CONTENT,
+    height: LayoutSize = LayoutSize.WRAP_CONTENT,
+    var drawable: Drawable? = null
+) : View(width, height) {
 
     override fun measure() {
         measuredWidth = when (desiredWidth) {
@@ -29,11 +24,13 @@ class Image : View {
         }
     }
 
+    override fun layout(x: Int, y: Int, width: Int, height: Int) {
+        super.layout(x, y, width, height)
+        drawable?.bounds?.set(0, 0, width, height)
+    }
+
     override fun draw(canvas: Canvas) {
-        drawable?.apply {
-            setBounds(0, 0, width, height)
-            draw(canvas)
-        }
+        drawable?.draw(canvas)
     }
 
 }

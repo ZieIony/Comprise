@@ -9,7 +9,7 @@ abstract class ViewGroup(
     views: List<View> = emptyList()
 ) : View(width, height) {
 
-    val views = mutableListOf<View>()
+    val views = ViewList(this)
 
     init {
         this.views.addAll(views)

@@ -1,9 +1,14 @@
 package comprise.theme
 
-import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
+import comprise.material.Style
+import comprise.view.LayoutSize
 
 
 open class ButtonStyle(
-    val textSize: Float = 14.0f * 3,
-    val textColor: ColorStateList
-) : Style()
+    width: LayoutSize = LayoutSize.WRAP_CONTENT,
+    height: LayoutSize = LayoutSize.WRAP_CONTENT,
+    minWidth: Int = 0,
+    minHeight: Int = 0,
+    val background: Drawable? = null
+) : Style(width, height, minWidth, minHeight)

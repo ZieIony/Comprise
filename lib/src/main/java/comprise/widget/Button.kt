@@ -3,14 +3,16 @@ package comprise.widget
 import android.graphics.drawable.Drawable
 import android.view.GestureDetector
 import android.view.MotionEvent
+import comprise.theme.ButtonStyle
 import comprise.view.ContentView
 import comprise.view.LayoutSize
 import comprise.view.View
 
 class Button(
-    width: LayoutSize = LayoutSize.WRAP_CONTENT,
-    height: LayoutSize = LayoutSize.WRAP_CONTENT,
-    background: Drawable? = null,
+    style: ButtonStyle,
+    width: LayoutSize = style.width,
+    height: LayoutSize = style.height,
+    background: Drawable? = style.background,
     content: View? = null,
     var onClick: ((MotionEvent) -> Unit)? = null
 ) : ContentView(width, height) {
@@ -20,6 +22,10 @@ class Button(
             override fun onSingleTapUp(e: MotionEvent): Boolean {
                 onClick?.invoke(e)
                 return true
+            }
+
+            override fun onLongPress(e: MotionEvent) {
+                onClick?.invoke(e)
             }
         })
 

@@ -11,4 +11,13 @@ open class CompriseActivity : AppCompatActivity() {
         compoundLayout.views.add(compoundView)
     }
 
+    val Int.dp: Int
+        get() = (this * resources.displayMetrics.density).toInt()
+    val Int.sp: Int
+        get() = (this * resources.displayMetrics.scaledDensity).toInt()
+
+    val Float.dp: Float
+        get() = (this * resources.displayMetrics.density)
+    val Float.sp: Float
+        get() = (this * resources.displayMetrics.scaledDensity)
 }

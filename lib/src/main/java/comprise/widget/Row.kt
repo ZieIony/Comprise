@@ -5,13 +5,11 @@ import comprise.view.View
 import comprise.view.ViewGroup
 import kotlin.math.min
 
-open class Row : ViewGroup {
-
-    constructor(
-        width: LayoutSize = LayoutSize.WRAP_CONTENT,
-        height: LayoutSize = LayoutSize.WRAP_CONTENT,
-        views: List<View> = emptyList()
-    ) : super(width, height, views)
+open class Row(
+    width: LayoutSize = LayoutSize.WRAP_CONTENT,
+    height: LayoutSize = LayoutSize.MATCH_PARENT,
+    views: List<View> = emptyList()
+) : ViewGroup(width, height, views) {
 
     override fun measure() {
         views.forEach {

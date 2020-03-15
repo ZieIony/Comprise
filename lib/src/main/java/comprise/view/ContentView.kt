@@ -3,17 +3,24 @@ package comprise.view
 import android.graphics.Canvas
 import android.view.MotionEvent
 
-open class ContentView : View {
+open class ContentView(
+    width: LayoutSize = LayoutSize.WRAP_CONTENT,
+    height: LayoutSize = LayoutSize.WRAP_CONTENT,
+    content: View? = null
+) : View(width, height) {
 
-    lateinit var content: View
+    private var _content: View? = null
+    open var content: View
+        get() = _content!!
+        set(value) {
+            _content?.parent = null
+            _content = value
+            value.parent = this
+        }
 
-    constructor(
-        width: LayoutSize = LayoutSize.WRAP_CONTENT,
-        height: LayoutSize = LayoutSize.WRAP_CONTENT,
-        content: View? = null
-    ) : super(width, height) {
+    init {
         content?.let {
-            this.content = content
+            this.content = it
         }
     }
 

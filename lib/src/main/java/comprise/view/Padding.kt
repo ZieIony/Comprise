@@ -1,10 +1,18 @@
 package comprise.view
 
 import android.graphics.Canvas
+import android.view.MotionEvent
 
 class Padding : View {
 
-    lateinit var content: View
+    private var _content: View? = null
+    var content: View
+        get() = _content!!
+        set(value) {
+            _content?.parent = null
+            _content = value
+            value.parent = this
+        }
 
     var paddingLeft: Int = 0
     var paddingTop: Int = 0
@@ -67,5 +75,9 @@ class Padding : View {
         canvas.translate(paddingLeft.toFloat(), paddingTop.toFloat())
         content.draw(canvas)
         canvas.restoreToCount(saveCount)
+    }
+
+    override fun touchEvent(ev: MotionEvent): Boolean {
+        return content.touchEvent(ev)
     }
 }

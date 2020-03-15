@@ -2,6 +2,7 @@ package comprise.view
 
 import android.graphics.Canvas
 import android.view.MotionEvent
+import kotlin.math.max
 
 abstract class View {
     var desiredWidth: LayoutSize
@@ -16,6 +17,8 @@ abstract class View {
     var measuredHeight = 0
     var width = 0 // what was finally mediated
     var height = 0
+
+    var parent: View? = null
 
     constructor(
         width: LayoutSize = LayoutSize.WRAP_CONTENT,
@@ -45,12 +48,20 @@ abstract class View {
     open fun layout(x: Int, y: Int, width: Int, height: Int) {
         this.x = x
         this.y = y
-        this.width = width
-        this.height = height
+        this.width = max(0, width)
+        this.height = max(0, height)
     }
 
     open fun draw(canvas: Canvas) {}
 
     open fun touchEvent(ev: MotionEvent) = false
+
+    open fun requestLayout() {
+        parent?.requestLayout()
+    }
+
+    open fun requestDraw() {
+        parent?.requestDraw()
+    }
 }
 
