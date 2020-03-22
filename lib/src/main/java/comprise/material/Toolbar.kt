@@ -1,21 +1,18 @@
 package comprise.material
 
-import android.content.res.ColorStateList
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import comprise.theme.dp
-import comprise.theme.sp
 import comprise.view.*
-import comprise.widget.Image
-import comprise.widget.Shadow
+import comprise.widget.ImageView
 import comprise.widget.Stack
+import comprise.widget.TextStyle
 import comprise.widget.VerticalGravity
 
 
-class ToolbarStyle(
-    var textSize: Float = 20.0f.sp,
-    var textColor: ColorStateList,
+open class ToolbarStyle(
+    var textStyle: TextStyle,
     var background: Drawable? = null
 ) : Style(
     width = LayoutSize.MATCH_PARENT,
@@ -26,52 +23,45 @@ class Toolbar(
     style: ToolbarStyle,
     width: LayoutSize = style.width,
     height: LayoutSize = style.height,
-    icon: View?,
-    title: View,
+    minWidth: Int = style.minWidth,
+    minHeight: Int = style.minHeight,
+    name: String? = null,
+    icon: View? = null,
+    title: View? = null,
     background: Drawable? = style.background
-) : ContentView(width, height) {
+) : ViewContainer(width, height, minWidth, minHeight, name = name) {
 
     private val rect = RectF()
     private val path = Path()
 
-    var background: Drawable?
-        get() = backgroundImage.drawable
-        set(value) {
-            backgroundImage.drawable = value
-        }
+    private val backgroundImage = ImageView(
+        LayoutSize.MATCH_PARENT, LayoutSize.MATCH_PARENT, drawable = background
+    )
 
-    private val backgroundImage: Image =
-        Image(
-            LayoutSize.MATCH_PARENT, LayoutSize.MATCH_PARENT, drawable = background
-        )
+    var background by ChildPropertDelegate<Drawable?>(backgroundImage::drawable)
 
     init {
-        content = Shadow(
-            radius = 8.0f * 3,
-            path = path,
-            content = Clip(
+        child = Clip(
+            width, height,
+            child = Stack(
                 width, height,
-                content = Stack(
-                    width, height,
-                    verticalGravity = VerticalGravity.CENTER,
-                    views = if (icon != null) {
-                        listOf(
-                            backgroundImage,
-                            Padding(paddingLeft = 4.dp, content = icon),
-                            Padding(paddingLeft = 72.dp, content = title)
-                        )
-                    } else {
-                        listOf(
-                            backgroundImage,
-                            Padding(paddingLeft = 16.dp, content = title)
-                        )
-                    }
-                ),
-                path = path
-            )
+                verticalGravity = VerticalGravity.CENTER,
+                children = if (icon != null) {
+                    listOf(
+                        backgroundImage,
+                        Padding(paddingLeft = 4.dp, child = icon),
+                        Padding(paddingLeft = 72.dp, child = title)
+                    )
+                } else {
+                    listOf(
+                        backgroundImage,
+                        Padding(paddingLeft = 16.dp, child = title)
+                    )
+                }
+            ),
+            path = path
         )
     }
-
 
     override fun layout(x: Int, y: Int, width: Int, height: Int) {
         super.layout(x, y, width, height)

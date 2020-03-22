@@ -7,15 +7,19 @@ import comprise.theme.ButtonStyle
 import comprise.view.ContentView
 import comprise.view.LayoutSize
 import comprise.view.View
+import comprise.view.ViewContainer
 
 class Button(
     style: ButtonStyle,
     width: LayoutSize = style.width,
     height: LayoutSize = style.height,
+    minWidth: Int = style.minWidth,
+    minHeight: Int = style.minHeight,
+    name: String? = null,
     background: Drawable? = style.background,
     content: View? = null,
     var onClick: ((MotionEvent) -> Unit)? = null
-) : ContentView(width, height) {
+) : ViewContainer(width, height, minWidth, minHeight, name), ContentView {
 
     private val gestureDetector =
         GestureDetector(object : GestureDetector.SimpleOnGestureListener() {
@@ -23,29 +27,34 @@ class Button(
                 onClick?.invoke(e)
                 return true
             }
-
-            override fun onLongPress(e: MotionEvent) {
-                onClick?.invoke(e)
-            }
         })
 
-    private val backgroundImage = Image(
+    private val backgroundImage = ImageView(
         LayoutSize.MATCH_PARENT,
         LayoutSize.MATCH_PARENT,
         drawable = background
     )
 
+    private val container = ViewContainer(width, height, child = content)
+
+    override var content: View?
+        get() = container.child
+        set(value) {
+            container.child = value
+        }
+
     init {
-        this.content = Stack(
+        this.child = Stack(
             width, height,
-            views = listOfNotNull(
+            children = listOfNotNull(
                 backgroundImage,
-                content
+                container
             )
         )
     }
 
     override fun touchEvent(ev: MotionEvent): Boolean {
+        super.touchEvent(ev)
         return gestureDetector.onTouchEvent(ev)
     }
 }

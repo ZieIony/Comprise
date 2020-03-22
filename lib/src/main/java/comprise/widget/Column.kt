@@ -8,22 +8,25 @@ import kotlin.math.min
 open class Column(
     width: LayoutSize = LayoutSize.MATCH_PARENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
-    views: List<View> = emptyList()
-) : ViewGroup(width, height, views) {
+    minWidth: Int = 0,
+    minHeight: Int = 0,
+    name: String? = null,
+    children: List<View> = emptyList()
+) : ViewGroup(width, height, minWidth, minHeight, name, children) {
 
     override fun measure() {
-        views.forEach {
+        children.forEach {
             it.measure()
         }
 
         measuredWidth = when (desiredWidth) {
-            LayoutSize.WRAP_CONTENT -> views.filter { it.desiredWidth != LayoutSize.MATCH_PARENT }.map { it.measuredWidth }.max()
+            LayoutSize.WRAP_CONTENT -> children.filter { it.desiredWidth != LayoutSize.MATCH_PARENT }.map { it.measuredWidth }.max()
                 ?: 0
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
             else -> desiredWidth.size
         }
         measuredHeight = when (desiredHeight) {
-            LayoutSize.WRAP_CONTENT -> views.filter { it.desiredHeight != LayoutSize.MATCH_PARENT }.map { it.measuredHeight }.sum()
+            LayoutSize.WRAP_CONTENT -> children.filter { it.desiredHeight != LayoutSize.MATCH_PARENT }.map { it.measuredHeight }.sum()
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
             else -> desiredHeight.size
         }
@@ -33,7 +36,7 @@ open class Column(
         super.layout(x, y, width, height)
 
         var currentY = 0
-        views.forEach {
+        children.forEach {
             it.layout(
                 it.x,
                 currentY,

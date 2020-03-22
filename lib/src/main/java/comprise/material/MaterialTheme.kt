@@ -2,8 +2,11 @@ package comprise.material
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import comprise.theme.dp
+import comprise.widget.StateList
+import comprise.widget.TextStyle
 
 
 class MaterialTheme(context: Context) {
@@ -19,15 +22,30 @@ class MaterialTheme(context: Context) {
         cornerRadius = 2.0f.dp
     )
 
-    var textButtonStyle = MaterialTextButtonStyle(
-        background = ColorDrawable(colorAccent),
-        cornerRadius = 2.0f.dp,
+    var buttonTextStyle = TextStyle(
         textColor = textColorInverse,
         textSize = 14.0f.dp
     )
 
-    val toolbarStyle = ToolbarStyle(
+    var headerTextStyle = TextStyle(
         textColor = textColorInverse,
-        background = ColorDrawable(colorPrimary)
+        textSize = 20.0f.dp
+    )
+
+    var textButtonStyle = MaterialTextButtonStyle(
+        background = ColorDrawable(colorAccent),
+        cornerRadius = 2.0f.dp,
+        textStyle = buttonTextStyle
+    )
+
+    val toolbarStyle = ToolbarStyle(
+        textStyle = headerTextStyle,
+        background = ColorDrawable(Color.WHITE)
+    )
+
+    val actionBarStyle = ActionBarStyle(
+        textStyle = headerTextStyle,
+        background = ColorDrawable(colorPrimary),
+        elevation = StateList(8.0f.dp)
     )
 }

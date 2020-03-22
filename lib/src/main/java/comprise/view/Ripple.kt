@@ -3,7 +3,6 @@ package comprise.view
 import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.RippleDrawable
 import android.view.MotionEvent
@@ -11,8 +10,8 @@ import android.view.MotionEvent
 class Ripple(
     width: LayoutSize = LayoutSize.WRAP_CONTENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
-    content: View? = null
-) : ContentView(width, height, content) {
+    child: View? = null
+) : ViewContainer(width, height, child = child) {
 
     private val rippleDrawable = RippleDrawable(ColorStateList.valueOf(Color.WHITE), null, null)
 
@@ -30,6 +29,7 @@ class Ripple(
 
     init {
         rippleDrawable.callback = callback
+        state.add(android.R.attr.state_enabled)
     }
 
     override fun layout(x: Int, y: Int, width: Int, height: Int) {
@@ -37,24 +37,25 @@ class Ripple(
         rippleDrawable.setBounds(0, 0, width, height)
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, editMode: Boolean, debugMode: Boolean) {
         rippleDrawable.draw(canvas)
-        super.draw(canvas)
+        super.draw(canvas, editMode, debugMode)
     }
 
     override fun touchEvent(ev: MotionEvent): Boolean {
         if (ev.action == MotionEvent.ACTION_DOWN) {
             rippleDrawable.setHotspot(ev.x, ev.y)
-            rippleDrawable.state = intArrayOf(
-                android.R.attr.state_enabled,
-                android.R.attr.state_pressed
-            )
+            state.add(android.R.attr.state_pressed)
         } else if (ev.action == MotionEvent.ACTION_MOVE) {
             rippleDrawable.setHotspot(ev.x, ev.y)
         } else if (ev.action == MotionEvent.ACTION_UP || ev.action == MotionEvent.ACTION_CANCEL) {
-            rippleDrawable.state = intArrayOf(android.R.attr.state_enabled)
+            state.clear(android.R.attr.state_pressed)
         }
         super.touchEvent(ev)
         return true
+    }
+
+    override fun onStateChanged() {
+        rippleDrawable.state = state.get().toIntArray()
     }
 }

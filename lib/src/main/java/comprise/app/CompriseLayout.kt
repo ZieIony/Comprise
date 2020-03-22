@@ -17,9 +17,10 @@ open class CompriseLayout @JvmOverloads constructor(
     defStyleAttr
 ) {
 
-    private val root = RootLayout(LayoutSize.MATCH_PARENT, LayoutSize.MATCH_PARENT, androidView = this)
+    private val root =
+        RootLayout(LayoutSize.MATCH_PARENT, LayoutSize.MATCH_PARENT, androidView = this)
 
-    val views = root.views
+    val views = root.children
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
@@ -31,10 +32,20 @@ open class CompriseLayout @JvmOverloads constructor(
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
 
-        root.draw(canvas)
+        root.draw(canvas, editMode = isInEditMode, debugMode = false)
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         return root.touchEvent(ev)
     }
+
+    val Int.dp: Int
+        get() = (this * resources.displayMetrics.density).toInt()
+    val Int.sp: Int
+        get() = (this * resources.displayMetrics.scaledDensity).toInt()
+
+    val Float.dp: Float
+        get() = (this * resources.displayMetrics.density)
+    val Float.sp: Float
+        get() = (this * resources.displayMetrics.scaledDensity)
 }

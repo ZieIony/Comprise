@@ -6,31 +6,38 @@ import android.view.MotionEvent
 abstract class ViewGroup(
     width: LayoutSize = LayoutSize.WRAP_CONTENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
-    views: List<View> = emptyList()
-) : View(width, height) {
+    minWidth: Int = 0,
+    minHeight: Int = 0,
+    name: String? = null,
+    children: List<View> = emptyList()
+) : View(width, height, minWidth, minHeight, name) {
 
-    val views = ViewList(this)
+    val children = ViewList(this)
 
     init {
-        this.views.addAll(views)
+        this.children.addAll(children)
     }
 
-    override fun draw(canvas: Canvas) {
-        views.forEach {
+    override fun draw(canvas: Canvas, editMode: Boolean, debugMode: Boolean) {
+        children.forEach {
             val saveCount = canvas.save()
             canvas.translate(it.x.toFloat(), it.y.toFloat())
-            it.draw(canvas)
+            it.draw(canvas, editMode, debugMode)
             canvas.restoreToCount(saveCount)
         }
     }
 
     override fun touchEvent(ev: MotionEvent): Boolean {
-        views.forEach {
+        children.forEach {
             val event = MotionEvent.obtain(ev)
             event.setLocation(event.x - it.x.toFloat(), event.y - it.y.toFloat())
-            if (event.x >= 0 && event.y >= 0 && event.x <= it.width && event.y <= it.height)
-                if (it.touchEvent(event))
+            if (event.x >= 0 && event.y >= 0 && event.x <= it.width && event.y <= it.height) {
+                if (it.touchEvent(event)) {
+                    event.recycle()
                     return true
+                }
+            }
+            event.recycle()
         }
         return super.touchEvent(ev)
     }

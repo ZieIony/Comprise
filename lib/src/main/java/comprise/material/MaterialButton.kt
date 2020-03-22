@@ -24,51 +24,41 @@ open class MaterialButton(
     style: MaterialButtonStyle,
     width: LayoutSize = style.width,
     height: LayoutSize = style.height,
-    background: Drawable? = style.background,
+    minWidth: Int = style.minWidth,
+    minHeight: Int = style.minHeight,
+    name: String? = null,
     content: View? = null,
+    background: Drawable? = style.background,
     var cornerRadius: Float = style.cornerRadius,
     onClick: ((MotionEvent) -> Unit)? = null
-) : ContentView(width, height) {
+) : ViewContainer(width, height, minWidth, minHeight, name), ContentView {
 
-    private val ripple = Ripple(width, height)
+    private val ripple = Ripple(width, height, content)
 
-    init {
-        content?.let{
-            this.content = it
-        }
-    }
-
-    override var content: View
-        get() = ripple.content
-        set(value) {
-            ripple.content = value
-        }
+    override var content by ChildPropertDelegate<View?>(ripple::child)
 
     private val button: Button = Button(
         style,
         width, height,
-        background,
-        ripple,
-        onClick
+        minWidth, minHeight,
+        background = background,
+        content = ripple,
+        onClick = onClick
     )
 
-    var onClick
-        get() = button.onClick
-        set(value) {
-            button.onClick = value
-        }
+    var onClick by ChildPropertDelegate<((MotionEvent) -> Unit)?>(button::onClick)
 
     private val rect = RectF()
     private val path = Path()
 
     init {
-        super.content = Shadow(
+        child = Shadow(
             width, height,
             path = path,
-            content = Clip(
+            child = Clip(
                 width, height,
                 path = path,
-                content = button
+                child = button
             )
         )
     }

@@ -1,11 +1,6 @@
 package comprise.view
 
-class LayoutSize {
-    val size: Int
-
-    constructor(size: Int = 0) {
-        this.size = size
-    }
+class LayoutSize(val size: Int = 0) {
 
     companion object {
         val WRAP_CONTENT = LayoutSize(-1)

@@ -6,7 +6,8 @@ import android.text.Layout
 import android.view.MotionEvent
 import comprise.theme.dp
 import comprise.view.LayoutSize
-import comprise.widget.Text
+import comprise.widget.TextView
+import comprise.widget.TextStyle
 
 
 open class MaterialTextButtonStyle(
@@ -16,31 +17,36 @@ open class MaterialTextButtonStyle(
     minHeight: Int = 36.dp,
     background: Drawable?,
     cornerRadius: Float = 2.0f.dp,
-    var textSize: Float,
-    var textColor: ColorStateList
+    var textStyle: TextStyle
 ) : MaterialButtonStyle(width, height, minWidth, minHeight, background, cornerRadius)
 
 open class MaterialTextButton(
     style: MaterialTextButtonStyle,
     width: LayoutSize = style.width,
     height: LayoutSize = style.height,
+    minWidth: Int = 0,
+    minHeight: Int = 0,
+    name: String? = null,
     background: Drawable? = style.background,
-    textSize: Float = style.textSize,
-    textColor: ColorStateList = style.textColor,
+    textSize: Float = style.textStyle.textSize,
+    textColor: ColorStateList = style.textStyle.textColor,
     text: CharSequence = "",
     cornerRadius: Float = style.cornerRadius,
     onClick: ((MotionEvent) -> Unit)? = null
 ) : MaterialButton(
     style,
     width, height,
-    background,
+    minWidth, minHeight,
+    name,
+    background = background,
     cornerRadius = cornerRadius,
     onClick = onClick
 ) {
 
-    private val textView = Text(
-        this.desiredWidth, this.desiredHeight,
-        style.minWidth, style.minHeight,
+    private val textView = TextView(
+        style = style.textStyle,
+        width = this.desiredWidth, height = this.desiredHeight,
+        minWidth = style.minWidth, minHeight = style.minHeight,
         text = text,
         textColor = textColor,
         textSize = textSize,

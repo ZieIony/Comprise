@@ -8,19 +8,22 @@ import kotlin.math.min
 open class Stack(
     width: LayoutSize = LayoutSize.WRAP_CONTENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
+    minWidth: Int = 0,
+    minHeight: Int = 0,
+    name: String? = null,
     var verticalGravity: VerticalGravity = VerticalGravity.TOP,
     var horizontalGravity: HorizontalGravity = HorizontalGravity.LEFT,
-    views: List<View> = emptyList()
-) : ViewGroup(width, height, views) {
+    children: List<View> = emptyList()
+) : ViewGroup(width, height, minWidth, minHeight, name, children) {
 
     override fun measure() {
-        views.forEach {
+        children.forEach {
             it.measure()
         }
 
         measuredWidth = when (desiredWidth) {
             LayoutSize.WRAP_CONTENT -> {
-                views.filter { it.desiredWidth != LayoutSize.MATCH_PARENT }.map { it.measuredWidth }.max()
+                children.filter { it.desiredWidth != LayoutSize.MATCH_PARENT }.map { it.measuredWidth }.max()
                     ?: 0
             }
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
@@ -28,7 +31,7 @@ open class Stack(
         }
         measuredHeight = when (desiredHeight) {
             LayoutSize.WRAP_CONTENT -> {
-                views.filter { it.desiredHeight != LayoutSize.MATCH_PARENT }.map { it.measuredHeight }.max()
+                children.filter { it.desiredHeight != LayoutSize.MATCH_PARENT }.map { it.measuredHeight }.max()
                     ?: 0
             }
             LayoutSize.MATCH_PARENT -> Int.MAX_VALUE
@@ -39,7 +42,7 @@ open class Stack(
     override fun layout(x: Int, y: Int, width: Int, height: Int) {
         super.layout(x, y, width, height)
 
-        views.forEach {
+        children.forEach {
             val w = min(it.measuredWidth, width)
             val h = min(it.measuredHeight, height)
             val itx = when (horizontalGravity) {

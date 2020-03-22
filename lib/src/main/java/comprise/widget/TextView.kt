@@ -1,26 +1,35 @@
 package comprise.widget
 
 import android.content.res.ColorStateList
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.Typeface
+import android.graphics.*
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
+import comprise.theme.sp
 import comprise.view.LayoutSize
 import comprise.view.View
 import kotlin.math.abs
 import kotlin.math.max
 
-class Text(
+
+class TextStyle(
+    var textSize: Float,
+    var textColor: ColorStateList
+) {
+    companion object {
+        val DEFAULT: TextStyle = TextStyle(16.0f.sp, ColorStateList.valueOf(Color.BLACK))
+    }
+}
+
+open class TextView(
+    style: TextStyle = TextStyle.DEFAULT,
     width: LayoutSize = LayoutSize.WRAP_CONTENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
     minWidth: Int = 0,
     minHeight: Int = 0,
     text: CharSequence = "",
-    var textColor: ColorStateList = ColorStateList.valueOf(0xff000000.toInt()),
-    textSize: Float = 20.0f,
+    var textColor: ColorStateList = style.textColor,
+    textSize: Float = style.textSize,
     var alignment: Layout.Alignment = Layout.Alignment.ALIGN_NORMAL
 ) : View(width, height, minWidth, minHeight) {
 
@@ -55,7 +64,7 @@ class Text(
         layout = null
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, editMode: Boolean, debugMode: Boolean) {
         if (layout == null) {
             val alignment: Layout.Alignment = alignment
             layout = StaticLayout(

@@ -3,23 +3,22 @@ package comprise.widget
 import android.graphics.Path
 import android.graphics.RectF
 import comprise.view.Clip
-import comprise.view.ContentView
 import comprise.view.LayoutSize
 import comprise.view.View
+import comprise.view.ViewContainer
 
 class Card(
     width: LayoutSize = LayoutSize.WRAP_CONTENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
     content: View
-) : ContentView(width, height) {
+) : ViewContainer(width, height) {
 
     private val rect = RectF()
     private val path = Path()
 
     init {
         val clip = Clip(width, height, content, path)
-        val shadow = Shadow(width, height, clip, path)
-        this.content = shadow
+        child = Shadow(width, height, clip, path)
     }
 
     override fun layout(x: Int, y: Int, width: Int, height: Int) {

@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import comprise.view.LayoutSize
 import comprise.view.View
 
-class Image(
+open class ImageView(
     width: LayoutSize = LayoutSize.WRAP_CONTENT,
     height: LayoutSize = LayoutSize.WRAP_CONTENT,
     var drawable: Drawable? = null
@@ -29,7 +29,7 @@ class Image(
         drawable?.bounds?.set(0, 0, width, height)
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas, editMode: Boolean, debugMode: Boolean) {
         drawable?.draw(canvas)
     }
 
