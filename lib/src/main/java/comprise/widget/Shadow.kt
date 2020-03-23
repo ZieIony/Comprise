@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.view.MotionEvent
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.LayoutSize
 import comprise.view.View
 import comprise.view.ViewContainer

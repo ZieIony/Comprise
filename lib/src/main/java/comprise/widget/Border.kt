@@ -3,7 +3,7 @@ package comprise.widget
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.LayoutSize
 import comprise.view.View
 import comprise.view.ViewContainer

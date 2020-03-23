@@ -34,30 +34,36 @@ class MainActivity : CompriseActivity() {
         card = makeCard()
 
         setContentView(
-            Column(
+            Stack(
+                width = LayoutSize.MATCH_PARENT,
                 height = LayoutSize.MATCH_PARENT,
                 name = "main layout",
                 children = listOf(
-                    makeActionBar(),
-                    Stack(
+                    Padding(
                         width = LayoutSize.MATCH_PARENT,
-                        height = LayoutSize(300.dp),
-                        children = listOf(
-                            ImageView(
-                                width = LayoutSize.MATCH_PARENT,
-                                height = LayoutSize.MATCH_PARENT,
-                                drawable = ColorDrawable(0xffafafaf.toInt())
-                            ),
-                            ScrollView(
-                                name = "scroll view",
-                                child = Padding(
+                        height = LayoutSize(356.dp),
+                        paddingTop = 56.dp,
+                        child = Stack(
+                            width = LayoutSize.MATCH_PARENT,
+                            height = LayoutSize(300.dp),
+                            children = listOf(
+                                ImageView(
                                     width = LayoutSize.MATCH_PARENT,
-                                    padding = 16.dp,
-                                    child = makeContent()
+                                    height = LayoutSize.MATCH_PARENT,
+                                    drawable = ColorDrawable(0xffafafaf.toInt())
+                                ),
+                                ScrollView(
+                                    name = "scroll view",
+                                    child = Padding(
+                                        width = LayoutSize.MATCH_PARENT,
+                                        padding = 16.dp,
+                                        child = makeContent()
+                                    )
                                 )
                             )
                         )
-                    )
+                    ),
+                    makeActionBar()
                 )
             )
         )

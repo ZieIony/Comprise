@@ -4,7 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.view.MotionEvent
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.LayoutSize
 import comprise.widget.TextView
 import comprise.widget.TextStyle

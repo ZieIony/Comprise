@@ -3,7 +3,7 @@ package comprise.material
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.LayoutSize
 import comprise.view.View
 import comprise.view.ViewContainer
@@ -52,7 +52,7 @@ class ActionBar(
 
     var background by ChildPropertDelegate<Drawable?>(toolbar::background)
 
-    var elevation by ChildPropertDelegate<Drawable?>(shadow::elevation)
+    var elevation by ChildPropertDelegate<StateList<Float>>(shadow::elevation)
 
     init {
         child = shadow

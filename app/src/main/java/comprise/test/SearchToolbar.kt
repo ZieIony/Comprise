@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import comprise.material.IconButton
 import comprise.material.Toolbar
 import comprise.material.ToolbarStyle
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.Clip
 import comprise.view.LayoutSize
 import comprise.view.ViewContainer

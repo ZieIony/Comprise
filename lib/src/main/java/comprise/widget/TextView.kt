@@ -5,7 +5,7 @@ import android.graphics.*
 import android.text.Layout
 import android.text.StaticLayout
 import android.text.TextPaint
-import comprise.theme.sp
+import comprise.sp
 import comprise.view.LayoutSize
 import comprise.view.View
 import kotlin.math.abs

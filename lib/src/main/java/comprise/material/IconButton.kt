@@ -1,7 +1,7 @@
 package comprise.material
 
 import android.graphics.drawable.Drawable
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.LayoutSize
 import comprise.view.Padding
 import comprise.view.Ripple

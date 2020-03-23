@@ -5,7 +5,7 @@ import android.graphics.RectF
 import android.graphics.drawable.Drawable
 import android.view.MotionEvent
 import comprise.theme.ButtonStyle
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.*
 import comprise.widget.Button
 import comprise.widget.Shadow

@@ -3,7 +3,7 @@ package comprise.material
 import android.graphics.Path
 import android.graphics.RectF
 import android.graphics.drawable.Drawable
-import comprise.theme.dp
+import comprise.dp
 import comprise.view.*
 import comprise.widget.ImageView
 import comprise.widget.Stack
